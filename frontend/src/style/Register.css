@@ -1,0 +1,172 @@
+/* src/style/Register.css */
+
+/*
+  Global html and body styles (OPTIONAL but recommended for consistent layout)
+  If you have these defined elsewhere (e.g., index.css), ensure they don't conflict.
+*/
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background-color: #f0f2f5; /* Light grey page background, as in your image */
+  margin: 0;
+  padding: 20px; /* Overall padding for the page content */
+  display: flex; /* Enables flexbox for centering children */
+  flex-direction: column; /* Stacks children vertically (header, main content, footer) */
+  align-items: center; /* Horizontally centers direct children like .register-container */
+  min-height: 100vh; /* Ensures body takes at least full viewport height */
+}
+
+/* Main container for your registration form component */
+.register-container {
+  background-color: #ffffff; /* White container background */
+  padding: 35px 45px; /* Padding inside the white box */
+  border-radius: 8px; /* Rounded corners for the container */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Softer shadow for depth */
+  width: 100%; /* Takes full width of its parent, up to max-width */
+  max-width: 420px; /* Slightly wider to comfortably fit "Full Name" placeholder */
+  box-sizing: border-box;
+  text-align: left; /* Default text alignment for content INSIDE the container */
+  /* MODIFIED: Increased margin-top to move the container further down */
+  margin-top: 70px; /* << ADJUST THIS VALUE AS NEEDED >> */
+  margin-bottom: 30px; /* Space from a potential footer (adjust as needed) */
+}
+
+.register-container h2 {
+  text-align: center; /* Explicitly center the title */
+  color: #1c1e21; /* Dark text for title */
+  margin-top: 0; /* Remove default top margin if padding handles it */
+  margin-bottom: 30px; /* Space below the title */
+  font-size: 1.9rem; /* Title size */
+  font-weight: 600;
+}
+
+/* Message styling (for success/error messages) */
+.register-container .message {
+  text-align: center;
+  padding: 10px 15px;
+  margin-bottom: 20px;
+  border-radius: 6px;
+  font-size: 0.9em;
+  border: 1px solid transparent;
+  line-height: 1.4;
+}
+
+.register-container .success-message {
+  background-color: #d1e7dd;
+  color: #0f5132;
+  border-color: #badbcc;
+}
+
+.register-container .error-message {
+  background-color: #f8d7da;
+  color: #842029;
+  border-color: #f5c2c7;
+}
+
+/* Form specific styling */
+.register-container form {
+  display: flex;
+  flex-direction: column; /* Stacks form elements vertically */
+  gap: 20px; /* Space between form elements */
+}
+
+.register-container input[type="text"],
+.register-container input[type="email"],
+.register-container input[type="password"],
+.register-container select {
+  width: 100%; /* Inputs take full width of the form */
+  padding: 14px 18px; /* Padding inside inputs */
+  background-color: #f0f2f5; /* Light grey background for inputs, matching page background */
+  border: 1px solid #ccd0d5;    /* Subtle border */
+  border-radius: 6px;       /* Rounded corners for inputs */
+  box-sizing: border-box;
+  font-size: 1rem;
+  color: #1c1e21; /* Text color inside input */
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.register-container input[type="text"]:focus,
+.register-container input[type="email"]:focus,
+.register-container input[type="password"]:focus,
+.register-container select:focus {
+  outline: none;
+  border-color: #0866ff; /* Blue focus color */
+  box-shadow: 0 0 0 2.5px rgba(8, 102, 255, 0.25); /* Focus shadow */
+}
+
+/* Style select to match other inputs */
+.register-container select {
+  appearance: none; /* Remove default system appearance */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%234B4F56' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M2 5l6 6 6-6'/%3E%3C/svg%3E"); /* Darker arrow */
+  background-repeat: no-repeat;
+  background-position: right 18px center;
+  background-size: 0.7em;
+  padding-right: 40px; /* Make space for the custom arrow */
+}
+
+.register-container button[type="submit"] {
+  background-color: #1d2129; /* Dark button background */
+  color: white;
+  padding: 14px 18px; /* Button padding */
+  border: none;
+  border-radius: 6px; /* Rounded corners for button */
+  font-size: 1.05rem;
+  font-weight: 600; /* Bold text for button */
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  margin-top: 10px; /* A little space above the button */
+}
+
+.register-container button[type="submit"]:hover {
+  background-color: #373b41; /* Slightly lighter on hover */
+}
+
+.register-container button[type="submit"]:disabled {
+  background-color: #6c757d; /* Disabled state */
+  cursor: not-allowed;
+}
+
+/* Placeholder styling */
+.register-container input::placeholder {
+  color: #606770; /* Placeholder text color */
+  opacity: 1; /* Ensure placeholder is visible */
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 500px) { /* Adjusted breakpoint */
+  .register-container {
+    padding: 30px 25px; /* Adjust padding for smaller screens */
+    margin-left: 10px;   /* Prevent touching screen edges on very small devices */
+    margin-right: 10px;
+    max-width: none; /* Allow it to use more of the small screen width */
+    /* Adjust margin-top for smaller screens if needed */
+    margin-top: 40px; /* Example: Less top margin on smaller screens */
+  }
+
+  .register-container h2 {
+    font-size: 1.7rem;
+  }
+
+  .register-container input[type="text"],
+  .register-container input[type="email"],
+  .register-container input[type="password"],
+  .register-container select,
+  .register-container button[type="submit"] {
+    font-size: 0.95rem;
+    padding: 12px 16px;
+  }
+
+   .register-container select {
+    background-position: right 16px center;
+    padding-right: 35px;
+  }
+}

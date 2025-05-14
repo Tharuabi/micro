@@ -1,0 +1,66 @@
+/* CSS for Login page */
+
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap'); */ */
+
+/* Login.css */
+
+/* Login.css */
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #f4f4f4; /* Light gray background */
+  }
+  
+  .login-container {
+    width: 360px;
+    margin: 100px auto;
+    padding: 40px;
+    background-color: #ffffff; /* White box */
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    text-align: center;
+  }
+  
+  .login-container h2 {
+    margin-bottom: 24px;
+    font-size: 24px;
+    color: #222222; /* Dark gray */
+  }
+  
+  .login-container input {
+    width: 100%;
+    padding: 12px 14px;
+    margin: 12px 0;
+    border: 1px solid #d1d1d1;
+    border-radius: 6px;
+    font-size: 15px;
+    color: #333333;
+    background-color: #fafafa;
+  }
+  
+  .login-container input:focus {
+    border-color: #999999;
+    outline: none;
+    background-color: #ffffff;
+  }
+  
+  .login-container button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 16px;
+    background-color: #222222; /* Dark theme button */
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .login-container button:hover {
+    background-color: #000000;
+  }
+  

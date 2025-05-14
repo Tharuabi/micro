@@ -1,0 +1,117 @@
+/* Navbar Styles */
+:root {
+  /* Define colors based on Tailwind names for consistency */
+  --navbar-bg: #1F2937; /* gray-800 */
+  --navbar-text: #FFFFFF; /* white */
+  --navbar-hover-text: #FCD34D; /* yellow-300 */
+  --navbar-border: #374151; /* gray-700 - for potential borders */
+}
+
+.navbar {
+  background-color: var(--navbar-bg);
+  color: var(--navbar-text);
+  padding: 1rem; /* p-4 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  position: fixed; /* Make navbar fixed */
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000; /* Ensure it's above other content */
+}
+
+.navbar-container {
+  max-width: 1280px; /* max-w-7xl equivalent */
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  justify-content: space-between; /* justify-between */
+  align-items: center; /* items-center */
+  flex-wrap: wrap; /* Allow wrapping on small screens */
+  padding-left: 1rem; /* Add some padding for container content */
+  padding-right: 1rem;
+}
+
+.navbar-brand {
+  font-size: 1.25rem; /* text-xl */
+  font-weight: 700; /* font-bold */
+  color: inherit; /* Inherit text color from parent */
+  text-decoration: none;
+  margin-right: 1.5rem; /* Space between brand and links */
+}
+.navbar-brand:hover {
+  color: var(--navbar-hover-text); /* Consistent hover */
+}
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* gap-4 */
+  flex-wrap: wrap; /* Allow links to wrap on smaller screens */
+  /* On small screens, this might become a column or hidden behind a burger */
+}
+
+.navbar-link {
+  color: var(--navbar-text);
+  text-decoration: none;
+  padding: 0.5rem 0.25rem; /* Add some padding for easier clicking */
+  transition: color 0.2s ease-in-out;
+  font-weight: 500; /* Medium weight often looks good in navs */
+}
+
+.navbar-link:hover {
+  color: var(--navbar-hover-text); /* hover:text-yellow-300 */
+}
+
+/* Optional: Active link styling (requires NavLink from react-router-dom) */
+/*
+.navbar-link.active {
+  color: var(--navbar-hover-text);
+  border-bottom: 2px solid var(--navbar-hover-text);
+}
+*/
+
+.navbar-auth-links { /* If you use the grouping div */
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-left: 1rem; /* Add space before auth links */
+  border-left: 1px solid var(--navbar-border); /* Optional separator */
+  padding-left: 1rem;
+}
+
+
+/* Basic responsiveness - hide links or stack them */
+@media (max-width: 768px) {
+  .navbar-container {
+      flex-direction: column; /* Stack brand and links */
+      align-items: flex-start; /* Align items to the start */
+  }
+  .navbar-links {
+      margin-top: 0.75rem; /* Space below brand */
+      width: 100%; /* Take full width */
+      justify-content: flex-start; /* Align links to start */
+      /* Or add styles to hide behind a burger menu */
+  }
+   .navbar-auth-links {
+      margin-left: 0;
+      padding-left: 0;
+      border-left: none;
+      margin-top: 0.5rem; /* Space before auth links when stacked */
+      width: 100%;
+      justify-content: flex-start;
+  }
+}
+
+/* Add padding to the body to prevent content from hiding behind the fixed navbar */
+body {
+padding-top: 68px; /* Match the approximate height of the navbar (p-4 is 1rem, plus text height) - ADJUST AS NEEDED */
+                  /* If navbar height changes (e.g., wraps on mobile), this needs adjustment or a different approach */
+}
+
+@media (max-width: 768px) {
+  body {
+    /* Calculate a potentially larger padding-top if the navbar wraps and becomes taller */
+    /* This is tricky without JS, a fixed height navbar is easier */
+     padding-top: 120px; /* ESTIMATE - Adjust based on wrapped height */
+  }
+}

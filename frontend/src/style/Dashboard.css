@@ -1,0 +1,359 @@
+/* --- Global Dashboard Styles & Variables --- */
+:root {
+  --dash-primary-blue: #007bff; /* Primary blue from image */
+  --dash-text-dark: #333;
+  --dash-text-light: #555;
+  --dash-text-muted: #777;
+  --dash-bg-light-gray: #f4f7f6; /* Page background */
+  --dash-bg-white: #ffffff;
+  --dash-border-color: #e0e0e0;
+  --dash-border-radius: 6px; /* Slightly more rounded */
+  --dash-box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08); /* Softer shadow */
+  --dash-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --dash-green-approved: #28a745; /* Green for 'Approved' */
+  --dash-yellow-pending: #ffc107; /* Yellow for 'Pending' */
+  --dash-red-rejected: #dc3545;
+}
+
+body { /* Apply to body for page background */
+  font-family: var(--dash-font-family);
+  background-color: var(--dash-bg-light-gray);
+  color: var(--dash-text-dark);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.dashboard-page-container {
+  max-width: 1200px;
+  margin: 0 auto; /* Center page content */
+  padding: 20px;
+}
+
+/* Optional: Role switcher styling, can be removed if not needed */
+.dashboard-role-switcher {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 15px;
+  background-color: #343a40; /* Dark background */
+  color: var(--dash-bg-light-gray);
+  border-radius: var(--dash-border-radius);
+  margin-bottom: 25px;
+  font-size: 0.9em;
+}
+.dashboard-role-switcher strong {
+  color: var(--dash-yellow-pending);
+}
+.dashboard-role-switcher .dash-btn-small {
+    background-color: #495057;
+    border-color: #495057;
+}
+.dashboard-role-switcher .dash-btn-small:hover {
+    background-color: #5a6268;
+}
+
+
+.dashboard-content-area {
+    background-color: var(--dash-bg-white);
+    padding: 25px 30px; /* More padding inside content area */
+    border-radius: var(--dash-border-radius);
+    box-shadow: var(--dash-box-shadow);
+}
+
+
+/* --- Welcome Header (User Dashboard) --- */
+.dashboard-welcome-header {
+  margin-bottom: 30px;
+}
+.dashboard-welcome-header h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--dash-primary-blue); /* Blue welcome text */
+  margin-top: 0;
+  margin-bottom: 0.25rem;
+}
+.dashboard-welcome-header p {
+  font-size: 1rem;
+  color: var(--dash-text-light);
+  margin-bottom: 0;
+}
+
+/* --- Stats Grid & Cards --- */
+.dashboard-stats-grid {
+  display: grid;
+  /* 5 columns for the 5 stat cards in the image */
+  grid-template-columns: repeat(5, 1fr); 
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.dash-stat-card {
+  background-color: var(--dash-bg-white); /* Card background */
+  padding: 20px 15px;
+  border-radius: var(--dash-border-radius);
+  text-align: center;
+  border: 1px solid var(--dash-border-color); /* Subtle border */
+  /* box-shadow: var(--dash-box-shadow); Removed to match image better (image cards are flatter) */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Center content vertically if needed */
+}
+
+.dash-icon-custom { /* For icons in stat cards */
+  font-size: 2.2rem; /* Adjust size of emoji icons */
+  margin-bottom: 12px;
+  color: var(--dash-primary-blue); /* Default icon color, can be overridden */
+}
+/* Specific icon colors if needed - image shows them as fairly monochrome or subtly colored */
+.dash-stat-card:nth-child(1) .dash-icon-custom { color: #5cb85c; } /* Example: Green for projects */
+.dash-stat-card:nth-child(2) .dash-icon-custom { color: #f0ad4e; } /* Example: Orange for earnings */
+.dash-stat-card:nth-child(3) .dash-icon-custom { color: #5bc0de; } /* Example: Blue for views */
+.dash-stat-card:nth-child(4) .dash-icon-custom { color: #d9534f; } /* Example: Red for likes */
+.dash-stat-card:nth-child(5) .dash-icon-custom { color: #777; }    /* Example: Gray for inquiries */
+
+
+.dash-stat-value {
+  display: block;
+  font-size: 1.8rem; /* Large number */
+  font-weight: 600; /* Bolder number */
+  color: var(--dash-text-dark);
+  margin-bottom: 5px;
+}
+.dash-stat-label {
+  font-size: 0.85rem; /* Smaller label text */
+  color: var(--dash-text-muted);
+}
+
+/* --- Projects Section --- */
+.dashboard-projects-section {
+    margin-bottom: 30px;
+}
+.dashboard-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.dashboard-section-title {
+  font-size: 1.4rem; /* "Your Projects" title size */
+  font-weight: 600;
+  color: var(--dash-text-dark);
+  margin: 0;
+}
+
+/* --- Add New Project Button --- */
+.add-project-btn {
+  background-color: var(--dash-primary-blue) !important; /* Important to override generic dash-btn */
+  color: var(--dash-bg-white) !important;
+  border-color: var(--dash-primary-blue) !important;
+  padding: 10px 20px !important; /* Match image button size */
+  font-size: 0.9rem !important;
+  font-weight: 500 !important;
+  border-radius: var(--dash-border-radius) !important;
+}
+.add-project-btn .dash-action-icon { /* Icon inside the button */
+  margin-right: 8px;
+  font-size: 1em; /* Relative to button font size */
+}
+.add-project-btn:hover {
+  opacity: 0.9;
+}
+
+/* --- Table Styling (to match image) --- */
+.dash-table-container {
+  overflow-x: auto;
+  border: 1px solid var(--dash-border-color);
+  border-radius: var(--dash-border-radius);
+  background-color: var(--dash-bg-white);
+}
+.dash-projects-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.dash-projects-table th,
+.dash-projects-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid var(--dash-border-color);
+  vertical-align: middle;
+}
+.dash-projects-table tr:last-child td {
+  border-bottom: none; /* Remove border from last row's cells */
+}
+
+.dash-projects-table thead th {
+  background-color: #f8f9fa; /* Light gray header for table - from image */
+  color: var(--dash-text-muted); /* Muted text for headers */
+  font-weight: 600; /* Bolder headers */
+  font-size: 0.8rem; /* Smaller header text */
+  text-transform: uppercase; /* Uppercase headers like in image */
+  border-bottom-width: 2px; /* Thicker bottom border for header */
+}
+.dash-projects-table tbody tr:hover {
+  background-color: #f1f3f5; /* Subtle hover */
+}
+
+/* --- Status Badges (to match image) --- */
+.dash-status-badge {
+  padding: 5px 10px; /* Badge padding */
+  border-radius: 15px; /* Pill-shaped badges */
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--dash-text-dark); /* Default text for pending */
+  display: inline-block; /* To allow padding and centering */
+  line-height: 1.2;
+}
+.status-approved { background-color: var(--dash-green-approved); color: var(--dash-bg-white); }
+.status-pending { background-color: var(--dash-yellow-pending); color: var(--dash-text-dark); } /* Dark text on yellow */
+.status-rejected { background-color: var(--dash-red-rejected); color: var(--dash-bg-white); }
+.status-draft { background-color: #6c757d; color: var(--dash-bg-white); }
+.status-sold { background-color: #17a2b8; color: var(--dash-bg-white); }
+
+.dash-rejection-reason {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--dash-text-muted);
+  margin-top: 4px;
+}
+
+/* --- Action Buttons in Table (Edit/Delete Icons) --- */
+.dash-actions-cell {
+  white-space: nowrap;
+  text-align: left; /* As per image, icons are left aligned in their cell */
+}
+.dash-action-btn {
+  background: none;
+  border: none;
+  color: var(--dash-text-muted); /* Muted icon color */
+  cursor: pointer;
+  padding: 5px;
+  margin-right: 8px; /* Space between icons */
+  font-size: 1.1rem; /* Icon size */
+  transition: color 0.2s ease;
+}
+.dash-action-btn:last-child {
+    margin-right: 0;
+}
+.dash-action-btn.edit-btn:hover { color: var(--dash-primary-blue); }
+.dash-action-btn.delete-btn:hover { color: var(--dash-red-rejected); }
+.dash-action-btn.approve-btn:hover { color: var(--dash-green-approved); }
+.dash-action-btn.reject-btn:hover { color: var(--dash-red-rejected); }
+
+.dash-action-btn:disabled {
+  color: #bbb;
+  cursor: not-allowed;
+}
+
+/* --- Generic Button Styles --- */
+.dash-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1px solid transparent;
+  border-radius: var(--dash-border-radius);
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.dash-btn:hover { opacity: 0.85; }
+.dash-btn-primary { /* This is also used by Add New Project, specific styles above take precedence */
+  background-color: var(--dash-primary-blue); color: #fff; border-color: var(--dash-primary-blue);
+}
+.dash-btn-secondary {
+  background-color: #6c757d; color: #fff; border-color: #6c757d;
+}
+.dash-btn-small { padding: 0.25rem 0.75rem; font-size: 0.8rem; }
+
+
+/* --- Other Sections (Account Management, Top Performing etc. keep similar style) --- */
+.dashboard-other-actions, .dashboard-section { /* Generic section for admin too */
+    background-color: transparent; /* No separate background for these lower sections in the image */
+    box-shadow: none;
+    padding: 0; /* Reset padding if it's just a title and list/table */
+    margin-bottom: 30px;
+}
+.dashboard-other-actions .dashboard-section-title,
+.dashboard-section .dashboard-section-title {
+    /* Keep title style from .dashboard-section-title defined earlier */
+     margin-bottom: 15px;
+}
+.dash-action-links { display: flex; gap: 15px; flex-wrap: wrap; }
+.dash-list { list-style: none; padding-left: 0; }
+.dash-list-item { padding: 10px 0; border-bottom: 1px solid var(--dash-border-color); }
+.dash-list-item:last-child { border-bottom: none; }
+.dash-list-item a { color: var(--dash-primary-blue); text-decoration: none; font-weight: 500; }
+.dash-list-item a:hover { text-decoration: underline; }
+.dash-list-item span { color: var(--dash-text-muted); font-size: 0.9em; }
+
+
+/* --- Responsive Adjustments --- */
+@media screen and (max-width: 992px) { /* Adjust breakpoint for 5 cards */
+  .dashboard-stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); /* Allow wrapping */
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .dashboard-content-area {
+    padding: 20px 15px;
+  }
+  .dashboard-welcome-header h1 { font-size: 1.6rem; }
+  .dashboard-welcome-header p { font-size: 0.9rem; }
+  
+  .dashboard-stats-grid {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 15px;
+  }
+  .dash-stat-value { font-size: 1.5rem; }
+  .dash-stat-label { font-size: 0.8rem; }
+  .dash-icon-custom { font-size: 1.8rem; }
+
+  .dashboard-section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px; /* Space between title and button when stacked */
+  }
+  .add-project-btn {
+    width: 100%; /* Full width button on mobile */
+    justify-content: center;
+  }
+
+  .dash-projects-table thead { display: none; }
+  .dash-projects-table, .dash-projects-table tbody, .dash-projects-table tr, .dash-projects-table td {
+    display: block;
+    width: 100%;
+  }
+  .dash-projects-table tr {
+    margin-bottom: 15px;
+    border: 1px solid var(--dash-border-color);
+    border-radius: var(--dash-border-radius);
+    padding: 0; /* Reset padding, td will handle */
+  }
+  .dash-projects-table td {
+    text-align: right;
+    padding-left: 45%; /* Space for label */
+    position: relative;
+    border-bottom: 1px solid var(--dash-border-color); /* separator for stacked cells */
+  }
+   .dash-projects-table tr td:last-child {
+    border-bottom: none;
+  }
+  .dash-projects-table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 10px;
+    width: calc(45% - 20px);
+    padding-right: 10px;
+    font-weight: 600;
+    text-align: left;
+    white-space: nowrap;
+    font-size: 0.8em;
+    color: var(--dash-text-muted);
+  }
+  .dash-actions-cell { text-align: right !important; padding-left: 45% !important; }
+  .dash-actions-cell::before { content: attr(data-label) !important; }
+}

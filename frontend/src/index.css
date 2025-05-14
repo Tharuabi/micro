@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* src/App.css or src/index.css */
+
+.main-navbar.fixed-navbar {
+  position: fixed; /* or sticky */
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #222; /* Or your navbar bg */
+  height: 60px; /* SET THIS TO THE ACTUAL HEIGHT OF YOUR NAVBAR */
+  z-index: 1000; /* To keep it on top */
+  /* ... other navbar styles ... */
+}
+
+.main-content-area {
+  /* THIS IS THE KEY PROPERTY */
+  padding-top: 60px; /* SHOULD MATCH THE NAVBAR'S HEIGHT */
+  /* This ensures content starts below the fixed navbar */
+}

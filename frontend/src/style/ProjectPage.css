@@ -1,0 +1,469 @@
+/* ../style/ProjectPage.css */
+
+:root {
+  --pp-primary-color: #007bff;
+  --pp-primary-hover-color: #0056b3;
+  --pp-secondary-color: #6c757d;
+  --pp-success-color: #28a745;
+  --pp-success-hover-color: #1e7e34;
+  --pp-danger-color: #dc3545;
+  --pp-warning-color: #ffc107;
+  --pp-light-bg: #f8f9fa;
+  --pp-page-bg: #f4f7f9;
+  --pp-white-bg: #ffffff;
+  --pp-border-color: #dee2e6;
+  --pp-dark-text: #212529;
+  --pp-medium-text: #495057;
+  --pp-light-text: #6c757d;
+  --pp-font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --pp-border-radius: 0.375rem; /* 6px */
+  --pp-card-border-radius: 0.5rem; /* 8px for cards */
+  --pp-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+  --pp-box-shadow-hover: 0 6px 18px rgba(0, 0, 0, 0.1);
+  --pp-box-shadow-controls: 0 3px 10px rgba(0, 0, 0, 0.05);
+  --pp-transition-speed: 0.2s;
+  --pp-transition-long: 0.3s;
+}
+
+body {
+  font-family: var(--pp-font-family);
+  color: var(--pp-dark-text);
+  background-color: var(--pp-page-bg);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.project-page-container {
+  /* Max-width removed to allow controls to use more width if needed */
+  /* max-width: 1320px; */
+  width: 100%; /* Ensure it can go full width */
+  padding: 0 20px 30px 20px; /* Retain side padding */
+  margin: 0 auto; /* Center if there's a max-width elsewhere, but not strictly needed here */
+  box-sizing: border-box;
+}
+
+
+/* Icons - General styling */
+.pp-icon {
+  margin-right: 0.5em;
+  vertical-align: middle;
+  display: inline-block;
+}
+.pp-view-icon-svg {
+  width: 1.2em;
+  height: 1.2em;
+  vertical-align: middle;
+  margin-right: 0.4em;
+  fill: currentColor;
+}
+.pp-icon-cart { font-size: 1.2em; }
+.pp-icon-external-link, .pp-icon-details { font-size: 0.95em; }
+
+/* --- Header Section --- */
+.pp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 35px 0;
+  margin-bottom: 30px;
+  border-bottom: 1px solid var(--pp-border-color);
+}
+.pp-header-content {
+  flex-grow: 1;
+  text-align: left;
+}
+.pp-header-content h1 {
+  font-size: 2.6rem;
+  color: var(--pp-dark-text);
+  margin-top: 0;
+  margin-bottom: 0.4em;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+.pp-header-content p {
+  font-size: 1.1rem;
+  color: var(--pp-medium-text);
+  max-width: 650px;
+  margin-top: 0;
+  line-height: 1.5;
+}
+.pp-cart-button-header {
+  background-color: var(--pp-primary-color);
+  color: white;
+  padding: 0.75rem 1.3rem;
+  border: none;
+  border-radius: var(--pp-border-radius);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  transition: background-color var(--pp-transition-speed) ease, transform var(--pp-transition-speed) ease;
+  white-space: nowrap;
+}
+.pp-cart-button-header:hover, .pp-cart-button-header.active {
+  background-color: var(--pp-primary-hover-color);
+  transform: translateY(-1px);
+}
+.pp-cart-count {
+  background-color: rgba(0,0,0,0.2);
+  color: white;
+  font-size: 0.75em;
+  padding: 0.2em 0.55em;
+  border-radius: 10px;
+  font-weight: bold;
+  line-height: 1;
+}
+
+/* --- Controls Section (Filters, Search, View Toggle) --- */
+.pp-controls-section {
+  display: flex;
+  /* flex-wrap: wrap; */ /* Keep wrap for smaller screens, but manage item growth */
+  align-items: flex-end; /* Align items to bottom if they have different natural heights */
+  gap: 15px; /* Reduced gap for a tighter single line */
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: var(--pp-white-bg);
+  border-radius: var(--pp-card-border-radius);
+  box-shadow: var(--pp-box-shadow-controls);
+  width: 100%; /* Take full width of .project-page-container */
+  box-sizing: border-box;
+}
+
+/* This pp-top-bar will now try to keep search, filters, and view toggle on one line */
+.pp-top-bar {
+  display: flex;
+  flex-wrap: nowrap; /* Prevent wrapping on this specific bar by default */
+  gap: 15px;         /* Spacing between direct children (search, filters-container, view-toggle) */
+  align-items: flex-end; /* Align to bottom */
+  width: 100%; /* Take full width of .pp-controls-section */
+}
+
+
+.pp-search-bar-container {
+  display: flex;
+  align-items: center;
+  background-color: var(--pp-light-bg);
+  padding: 0.6rem 1rem;
+  border-radius: var(--pp-border-radius);
+  border: 1px solid var(--pp-border-color);
+  /* flex: 1 1 300px; /* Allow to grow and shrink, base width */
+  flex-grow: 0;     /* Don't let it grow excessively */
+  flex-shrink: 1;   /* Allow shrinking */
+  flex-basis: 320px; /* Give it a decent base width */
+  min-width: 280px; /* Minimum before it gets too small */
+  transition: border-color var(--pp-transition-speed) ease, box-shadow var(--pp-transition-speed) ease;
+}
+.pp-search-bar-container:focus-within {
+  border-color: var(--pp-primary-color);
+  box-shadow: 0 0 0 3px rgba(var(--pp-primary-color), 0.15);
+}
+.pp-search-bar-container .pp-icon-search { color: var(--pp-light-text); font-size: 1.1em; margin-right: 0.75rem; }
+.pp-search-bar { border: none; outline: none; padding: 0.3rem 0; font-size: 1rem; width: 100%; background-color: transparent; color: var(--pp-dark-text); }
+.pp-search-bar::placeholder { color: var(--pp-light-text); }
+
+.pp-filters-sort-container { /* Container for ALL individual filter groups */
+  display: flex;
+  flex-wrap: nowrap; /* Crucial: Keep individual filters on one line as much as possible */
+  gap: 10px; /* Reduced gap between individual filters */
+  align-items: flex-end;
+  flex-grow: 1; /* Allow this container to take up remaining space */
+  /* flex-shrink: 0; */ /* Prevent it from shrinking too much initially */
+  /* min-width: 0; /* Allows shrinking below content size if necessary */
+}
+.pp-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  flex: 0 1 auto; /* Don't grow, allow shrink, auto basis (content-based) */
+  /* min-width: 130px; /* Ensure filters don't get too squished, adjust as needed */
+}
+/* Specific min-widths for filter groups if needed */
+.pp-filter-group:nth-child(1), /* Type */
+.pp-filter-group:nth-child(2)  /* Price */
+ { min-width: 130px; }
+.pp-filter-group:nth-child(3)  /* Tech */
+ { min-width: 180px; }
+.pp-filter-group:nth-child(4)  /* Sort By */
+ { flex-grow: 1; min-width: 180px; } /* Let Sort By take more space if available */
+
+
+.pp-filter-label { font-size: 0.85rem; font-weight: 500; color: var(--pp-medium-text); display: flex; align-items: center; white-space: nowrap;}
+.pp-filter-label .pp-icon { font-size: 1em; color: var(--pp-secondary-color); margin-right: 0.4em; }
+.pp-dropdown, .pp-tech-input {
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--pp-border-color);
+  border-radius: var(--pp-border-radius);
+  font-size: 0.9rem;
+  background-color: var(--pp-white-bg);
+  color: var(--pp-dark-text);
+  width: 100%; /* Make them fill their .pp-filter-group parent */
+  box-sizing: border-box;
+  transition: border-color var(--pp-transition-speed) ease, box-shadow var(--pp-transition-speed) ease;
+}
+
+.pp-dropdown:focus, .pp-tech-input:focus {
+  border-color: var(--pp-primary-color);
+  box-shadow: 0 0 0 3px rgba(var(--pp-primary-color), 0.15);
+  outline: none;
+}
+
+.pp-view-toggle {
+  display: flex;
+  align-items: center;
+  background-color: var(--pp-light-bg);
+  border-radius: var(--pp-border-radius);
+  padding: 4px;
+  border: 1px solid var(--pp-border-color);
+  /* margin-left: auto; */ /* No auto margin here, rely on flexbox of pp-top-bar */
+  flex-shrink: 0; /* Prevent from shrinking */
+}
+.pp-view-btn {
+  background-color: transparent; border: none; padding: 0.5rem 1rem; cursor: pointer;
+  font-size: 0.9rem; color: var(--pp-medium-text); border-radius: calc(var(--pp-border-radius) - 2px);
+  display: flex; align-items: center; font-weight: 500;
+  transition: background-color var(--pp-transition-speed) ease, color var(--pp-transition-speed) ease;
+}
+.pp-view-btn.active { background-color: var(--pp-white-bg); color: var(--pp-primary-color); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+.pp-view-btn:not(.active):hover { color: var(--pp-dark-text); }
+.pp-view-btn-text { margin-left: 0.3em; }
+
+
+/* --- Projects Display Section --- (Keep as is) */
+.pp-projects-display-section { margin-top: 10px; }
+
+/* Project Grid (Keep as is) */
+.pp-projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+}
+/* ... (rest of .pp-project-card and its children styles remain the same) ... */
+.pp-project-card {
+  background-color: var(--pp-white-bg);
+  border-radius: var(--pp-card-border-radius);
+  box-shadow: var(--pp-box-shadow);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--pp-transition-long) ease, box-shadow var(--pp-transition-long) ease;
+}
+.pp-project-card:hover { transform: translateY(-5px); box-shadow: var(--pp-box-shadow-hover); }
+.pp-card-image-link { display: block; text-decoration: none; }
+.pp-card-image-container { width: 100%; padding-top: 56.25%; position: relative; overflow: hidden; background-color: var(--pp-light-bg); }
+.pp-card-image { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.35s ease; }
+.pp-project-card:hover .pp-card-image { transform: scale(1.05); }
+.pp-card-category-badge-on-image {
+  position: absolute; top: 10px; left: 10px; background-color: var(--pp-primary-color);
+  color: white; padding: 0.3em 0.7em; border-radius: var(--pp-border-radius);
+  font-size: 0.75rem; font-weight: 600; z-index: 1;
+}
+.pp-card-content { padding: 1rem 1.25rem; flex-grow: 1; display: flex; flex-direction: column; }
+.pp-card-title { font-size: 1.2rem; margin-top: 0; margin-bottom: 0.5em; font-weight: 600; line-height: 1.3; }
+.pp-card-title a { color: var(--pp-dark-text); text-decoration: none; transition: color var(--pp-transition-speed) ease; }
+.pp-card-title a:hover { color: var(--pp-primary-color); }
+.pp-card-description {
+  font-size: 0.9rem; color: var(--pp-medium-text); margin-bottom: 0.8em; line-height: 1.5;
+  height: 4.05em; overflow: hidden; text-overflow: ellipsis;
+}
+.pp-project-link {
+  display: inline-flex; align-items: center; font-size: 0.85rem; color: var(--pp-primary-color);
+  text-decoration: none; margin-bottom: 0.8em; font-weight: 500; transition: color var(--pp-transition-speed) ease;
+}
+.pp-project-link:hover { color: var(--pp-primary-hover-color); text-decoration: underline; }
+.pp-project-link .pp-icon { font-size: 1em; margin-right: 0.3em; }
+.pp-card-tech-stack { margin-top: auto; margin-bottom: 0.8em; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.pp-tech-badge { background-color: #eef2f5; color: var(--pp-secondary-color); padding: 0.25em 0.6em; border-radius: 0.25rem; font-size: 0.75rem; font-weight: 500; }
+.pp-card-footer {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.75rem 1.25rem; border-top: 1px solid var(--pp-border-color); background-color: var(--pp-light-bg);
+}
+.pp-card-price { font-size: 1.15rem; font-weight: 700; color: var(--pp-primary-color); }
+.pp-btn.pp-btn-add-to-cart {
+  background-color: var(--pp-primary-color);
+  color: white; padding: 0.5rem 1rem; font-size: 0.9rem; font-weight: 600;
+  border: none; border-radius: var(--pp-border-radius); cursor: pointer;
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  transition: background-color var(--pp-transition-speed) ease, transform var(--pp-transition-speed) ease;
+}
+.pp-btn.pp-btn-add-to-cart:hover { background-color: var(--pp-primary-hover-color); transform: translateY(-1px); }
+
+/* Project List View (Keep as is) */
+.pp-projects-list { display: flex; flex-direction: column; gap: 20px; }
+/* ... (rest of .pp-project-list-item and its children styles remain the same) ... */
+.pp-project-list-item {
+  background-color: var(--pp-white-bg); border-radius: var(--pp-card-border-radius); box-shadow: var(--pp-box-shadow);
+  display: flex; overflow: hidden; transition: transform var(--pp-transition-long) ease, box-shadow var(--pp-transition-long) ease;
+}
+.pp-project-list-item:hover { transform: translateY(-4px); box-shadow: var(--pp-box-shadow-hover); }
+.pp-list-item-image-link { flex-shrink: 0; }
+.pp-list-item-image { width: 180px; height: 100%; min-height: 150px; object-fit: cover; display: block; }
+.pp-list-item-info { padding: 1rem 1.5rem; flex-grow: 1; }
+.pp-card-category-badge {
+  background-color: var(--pp-secondary-color); color: white; padding: 0.3em 0.7em; border-radius: var(--pp-border-radius);
+  font-size: 0.75rem; font-weight: 600; display: inline-block; margin-bottom: 0.5em;
+}
+.pp-list-item-title { font-size: 1.3rem; margin-top: 0; margin-bottom: 0.4em; font-weight: 600; line-height: 1.3; }
+.pp-list-item-title a { color: var(--pp-dark-text); text-decoration: none; transition: color var(--pp-transition-speed) ease; }
+.pp-list-item-title a:hover { color: var(--pp-primary-color); }
+.pp-list-item-description { font-size: 0.9rem; color: var(--pp-medium-text); margin-bottom: 0.8em; line-height: 1.5; }
+.pp-list-item-tech-stack { margin-top: 0.8em; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.pp-list-item-action {
+  padding: 1rem 1.5rem; display: flex; flex-direction: column; align-items: flex-end;
+  justify-content: center; gap: 0.8rem; border-left: 1px solid var(--pp-border-color);
+  background-color: var(--pp-light-bg); min-width: 180px; text-align: right;
+}
+.pp-list-item-price { font-size: 1.3rem; font-weight: 700; color: var(--pp-primary-color); }
+
+
+/* --- Cart Modal (Quick View) --- (Keep as is) */
+.pp-cart-modal-overlay {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); display: flex; justify-content: flex-end;
+  z-index: 1050; opacity: 0; visibility: hidden;
+  transition: opacity var(--pp-transition-long) ease, visibility 0s var(--pp-transition-long) linear;
+}
+/* ... (rest of cart modal styles remain the same) ... */
+.pp-cart-modal-overlay.visible { opacity: 1; visibility: visible; transition-delay: 0s; }
+.pp-cart-modal {
+  background-color: var(--pp-white-bg); width: 100%; max-width: 400px; height: 100vh;
+  box-shadow: -5px 0 20px rgba(0,0,0,0.15); display: flex; flex-direction: column;
+  transform: translateX(100%); transition: transform var(--pp-transition-long) cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.pp-cart-modal-overlay.visible .pp-cart-modal { transform: translateX(0); }
+.pp-cart-modal-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1rem 1.5rem; border-bottom: 1px solid var(--pp-border-color);
+}
+.pp-cart-modal-header h2 { margin: 0; font-size: 1.4rem; color: var(--pp-dark-text); font-weight: 600; }
+.pp-cart-close-button { background: none; border: none; font-size: 1.5rem; color: var(--pp-light-text); cursor: pointer; padding: 0.25rem; line-height: 1; transition: color var(--pp-transition-speed) ease; }
+.pp-cart-close-button:hover { color: var(--pp-dark-text); }
+.pp-cart-close-button .pp-icon { margin: 0; }
+.pp-cart-modal-body { overflow-y: auto; flex-grow: 1; padding: 1rem 1.5rem; }
+.pp-cart-empty-message { text-align: center; color: var(--pp-medium-text); font-size: 1rem; padding: 2rem 0; }
+.pp-cart-items-list { list-style: none; padding: 0; margin: 0; }
+.pp-cart-item { display: flex; align-items: center; padding: 0.8rem 0; border-bottom: 1px solid #f0f2f5; gap: 1rem; }
+.pp-cart-item:last-child { border-bottom: none; }
+.pp-cart-item-image { width: 60px; height: 60px; object-fit: cover; border-radius: var(--pp-border-radius); border: 1px solid var(--pp-border-color); }
+.pp-cart-item-details { flex-grow: 1; }
+.pp-cart-item-title-link { text-decoration: none; }
+.pp-cart-item-title { font-weight: 600; color: var(--pp-dark-text); font-size: 0.95rem; margin-bottom: 0.25em; display: block; line-height: 1.3; }
+.pp-cart-item-title-link:hover .pp-cart-item-title { color: var(--pp-primary-color); }
+.pp-cart-item-price { font-size: 0.9rem; color: var(--pp-primary-color); font-weight: 500; }
+.pp-cart-item-remove-button { background: none; border: none; color: var(--pp-danger-color); padding: 0.25rem; cursor: pointer; font-size: 1.1em; opacity: 0.7; transition: opacity var(--pp-transition-speed) ease; }
+.pp-cart-item-remove-button .pp-icon { margin: 0; }
+.pp-cart-item-remove-button:hover { opacity: 1; }
+.pp-cart-modal-footer { padding: 1rem 1.5rem; border-top: 1px solid var(--pp-border-color); background-color: var(--pp-light-bg); }
+.pp-cart-total { font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; color: var(--pp-dark-text); display: flex; justify-content: space-between; }
+.pp-cart-total span { color: var(--pp-primary-color); font-weight: 700; }
+.pp-btn-view-full-cart, .pp-cart-continue-shopping { display: block; width: 100%; text-align: center; padding: 0.7rem; border-radius: var(--pp-border-radius); text-decoration: none; font-weight: 600; transition: background-color var(--pp-transition-speed) ease; }
+.pp-btn-view-full-cart { background-color: var(--pp-primary-color); color: white; border: 1px solid var(--pp-primary-color); }
+.pp-btn-view-full-cart:hover { background-color: var(--pp-primary-hover-color); }
+.pp-cart-continue-shopping { background-color: var(--pp-secondary-color); color: white; border: 1px solid var(--pp-secondary-color); margin-top: 0.5rem; }
+.pp-cart-continue-shopping:hover { background-color: #545b62; }
+
+/* --- Loading, Error, No Projects States --- (Keep as is) */
+.pp-loading-spinner-container, .pp-no-projects-found, .pp-error-message { text-align: center; padding: 50px 20px; color: var(--pp-medium-text); }
+/* ... (rest of loading, error, no projects styles remain the same) ... */
+.pp-loading-spinner { border: 5px solid var(--pp-light-bg); border-top: 5px solid var(--pp-primary-color); border-radius: 50%; width: 50px; height: 50px; animation: pp-spin 0.8s linear infinite; margin: 0 auto 1.2rem auto; }
+@keyframes pp-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+.pp-loading-spinner-container p { font-size: 1.05em; font-weight: 500; }
+.pp-no-projects-found, .pp-error-message { background-color: var(--pp-white-bg); border-radius: var(--pp-card-border-radius); border: 1px solid var(--pp-border-color); margin: 20px auto; max-width: 600px; box-shadow: var(--pp-box-shadow-controls); }
+.pp-no-projects-found h2 { color: var(--pp-dark-text); margin-top: 0; margin-bottom: 0.5rem; font-size: 1.6rem; }
+.pp-no-projects-found p { font-size: 1rem; line-height: 1.6; }
+.pp-error-message { color: var(--pp-danger-color); background-color: #fff3f3; border-color: #ffcccc; }
+
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 1200px) { /* Larger tablets and small desktops */
+  .pp-top-bar {
+    flex-wrap: wrap; /* Allow wrapping for the main bar */
+  }
+  .pp-search-bar-container {
+    flex-basis: 100%; /* Search takes full width on its own line */
+    margin-bottom: 15px; /* Space when it wraps */
+  }
+  .pp-filters-sort-container {
+    flex-basis: auto; /* Let filters and view toggle share the next line */
+    flex-grow: 1;
+  }
+  .pp-view-toggle {
+    margin-left: 15px; /* Add some space from filters */
+  }
+}
+
+@media (max-width: 992px) { /* Tablets */
+  .project-page-container { padding: 0 15px 25px 15px; }
+  .pp-header { padding: 30px 0; margin-bottom: 25px; }
+  .pp-header-content h1 { font-size: 2.2rem; }
+  .pp-header-content p { font-size: 1rem; }
+
+  .pp-controls-section { padding: 15px; }
+  /* .pp-top-bar continues to wrap as needed */
+  .pp-filters-sort-container {
+    flex-wrap: wrap; /* Allow individual filters to wrap now */
+    width: 100%; /* Take full width when search is on its own line */
+  }
+  .pp-filter-group {
+    flex: 1 1 180px; /* Give filters more base width when they start wrapping */
+  }
+  .pp-view-toggle {
+    margin-left: 0;
+    margin-top: 10px; /* Space when it wraps to its own line */
+    width: 100%; /* Make view toggle full width if it wraps to its own line */
+    justify-content: flex-end; /* Align buttons to right */
+  }
+  .pp-view-btn { flex-grow: 0; } /* Don't make buttons grow excessively */
+
+  .pp-projects-grid { grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 20px; }
+}
+
+@media (max-width: 768px) { /* Smaller tablets and large phones */
+  .pp-header { flex-direction: column; align-items: center; text-align: center; gap: 20px; }
+  .pp-cart-button-header { margin-top: 10px; }
+
+  .pp-top-bar {
+      /* Already wrapping from 1200px */
+  }
+  .pp-filters-sort-container {
+      gap: 10px; /* Reduce gap between filters */
+  }
+  .pp-filter-group {
+    min-width: calc(50% - 10px); /* Aim for two filters per line */
+  }
+  .pp-filter-group:nth-child(3), /* Tech */
+  .pp-filter-group:nth-child(4)  /* Sort By */
+   { min-width: 100%; } /* Tech and Sort By take full width */
+
+
+  .pp-project-list-item { flex-direction: column; }
+  .pp-list-item-image { width: 100%; height: 200px; }
+  .pp-list-item-action { flex-direction: row; justify-content: space-between; align-items: center; border-left: none; border-top: 1px solid var(--pp-border-color); width: 100%; padding: 0.8rem 1rem; background-color: var(--pp-white-bg); }
+}
+
+@media (max-width: 576px) { /* Mobile phones */
+  .project-page-container { padding: 0 10px 20px 10px; }
+  .pp-header-content h1 { font-size: 2rem; }
+  .pp-controls-section { padding: 15px 10px; }
+  .pp-search-bar-container {
+      flex-basis: 100%;
+  }
+  .pp-filters-sort-container {
+      flex-direction: column; /* Stack all filters */
+      width: 100%;
+      gap: 10px;
+  }
+  .pp-filter-group {
+    min-width: 100%; /* Each filter takes full width */
+  }
+  .pp-view-toggle { width: 100%; justify-content: center; }
+  .pp-view-btn { flex-grow: 1; }
+
+  .pp-projects-grid { grid-template-columns: 1fr; gap: 15px; }
+  .pp-card-title, .pp-list-item-title { font-size: 1.15rem; }
+  .pp-card-description, .pp-list-item-description { font-size: 0.88rem; height: auto; max-height: 4.4em; }
+  .pp-card-price, .pp-list-item-price { font-size: 1.1rem; }
+  .pp-btn.pp-btn-add-to-cart { font-size: 0.88rem; padding: 0.45rem 0.9rem; }
+  .pp-cart-modal { max-width: 95%; }
+}
