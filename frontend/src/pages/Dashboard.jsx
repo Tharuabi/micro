@@ -70,8 +70,10 @@ const dummyAdminStats = {
 const Dashboard = () => {
   const [currentUser, setCurrentUser] = useState(dummyCurrentUserData);
   const [userProjects, setUserProjects] = useState(initialUserProjectsData);
-  const [userStats, setUserStats] = useState(userStatsDataFromImage); // Use new stats
+  const [userStats, setUserStats] = useState(userStatsDataFromImage);
   const [allProjects, setAllProjects] = useState(allMarketplaceProjectsData);
+  const [showModal, setShowModal] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
   const navigate = useNavigate();
 
   const toggleRole = () => {
@@ -79,9 +81,8 @@ const Dashboard = () => {
       ...prev,
       role: prev.role === 'user' ? 'admin' : 'user'
     }));
-     // When switching to user, reset to user-specific stats
-    if (currentUser.role === 'admin') { // about to switch to user
-        setUserStats(userStatsDataFromImage);
+    if (currentUser.role === 'admin') {
+      setUserStats(userStatsDataFromImage);
     }
   };
 
@@ -100,252 +101,225 @@ const Dashboard = () => {
   const handleEditProject = (projectId) => navigate(`/edit-project/${projectId}`);
 
   const handleProjectApproval = (projectId, newStatus) => {
-    const reason = newStatus === 'Rejected' ? prompt("Enter rejection reason (optional):") || "Not specified." : undefined;
-    setAllProjects(currentProjects =>
-      currentProjects.map(p =>
-        p.id === projectId ? { ...p, status: newStatus, rejectionReason: reason } : p
-      )
-    );
-    setUserProjects(currentProjects =>
-        currentProjects.map(p =>
-          p.id === projectId ? { ...p, status: newStatus, rejectionReason: reason } : p
+    if (currentUser.role === 'admin') {
+      setAllProjects(current =>
+        current.map(p =>
+          p.id === projectId ? { ...p, status: newStatus } : p
         )
-    );
-    console.log(`Project ${projectId} status changed to ${newStatus}`);
+      );
+      console.log(`Project ${projectId} status changed to ${newStatus}`);
+    }
   };
 
-  // --- JSX for User Dashboard (Updated to match image structure) ---
-  const UserDashboard = () => (
-    <>
-      <section className="dashboard-welcome-header">
-        <h1>Welcome back, {currentUser.name}!</h1>
-        <p>Manage your projects and track your performance.</p>
-      </section>
-
-      <section className="dashboard-stats-grid">
-        {/* Card 1: Projects Uploaded */}
-        <div className="dash-stat-card">
-          <IconProjectsUploaded />
-          <span className="dash-stat-value">{userStats.projectsUploaded}</span>
-          <span className="dash-stat-label">Projects Uploaded</span>
-        </div>
-        {/* Card 2: Total Earnings */}
-        <div className="dash-stat-card">
-          <IconTotalEarnings />
-          <span className="dash-stat-value">${userStats.totalEarnings.toLocaleString()}</span>
-          <span className="dash-stat-label">Total Earnings</span>
-        </div>
-        {/* Card 3: Total Views */}
-        <div className="dash-stat-card">
-          <IconTotalViews />
-          <span className="dash-stat-value">{userStats.totalViews.toLocaleString()}</span>
-          <span className="dash-stat-label">Total Views</span>
-        </div>
-        {/* Card 4: Total Likes */}
-        <div className="dash-stat-card">
-          <IconTotalLikes />
-          <span className="dash-stat-value">{userStats.totalLikes.toLocaleString()}</span>
-          <span className="dash-stat-label">Total Likes</span>
-        </div>
-        {/* Card 5: Total Inquiries */}
-        <div className="dash-stat-card">
-          <IconTotalInquiries />
-          <span className="dash-stat-value">{userStats.totalInquiries.toLocaleString()}</span>
-          <span className="dash-stat-label">Total Inquiries</span>
-        </div>
-      </section>
-
-      <section className="dashboard-projects-section">
-        <div className="dashboard-section-header">
-          <h2 className="dashboard-section-title">Your Projects</h2>
-          <Link to="/add-project" className="dash-btn dash-btn-primary add-project-btn">
-            <IconAdd /> Add New Project
-          </Link>
-        </div>
-        {userProjects.length > 0 ? (
-          <div className="dash-table-container">
-            <table className="dash-projects-table">
-              <thead>
-                <tr>
-                  <th>TITLE</th>
-                  <th>STATUS</th>
-                  <th>PRICE</th>
-                  <th>VIEWS</th>
-                  <th>LIKES</th>
-                  <th>INQUIRIES</th>
-                  <th>EARNINGS</th>
-                  <th>ACTIONS</th>
-                </tr>
-              </thead>
-              <tbody>
-                {userProjects.map(p => (
-                  <tr key={p.id}>
-                    <td data-label="TITLE">{p.title}</td>
-                    <td data-label="STATUS">
-                      <span className={`dash-status-badge status-${p.status.toLowerCase().replace(/\s+/g, '-')}`}>
-                        {p.status}
-                      </span>
-                      {p.status === 'Rejected' && p.rejectionReason && (
-                        <small className="dash-rejection-reason">Reason: {p.rejectionReason}</small>
-                      )}
-                    </td>
-                    <td data-label="PRICE">${p.price.toLocaleString()}</td>
-                    <td data-label="VIEWS">{p.views.toLocaleString()}</td>
-                    <td data-label="LIKES">{p.likes.toLocaleString()}</td>
-                    <td data-label="INQUIRIES">{p.inquiries.toLocaleString()}</td>
-                    <td data-label="EARNINGS">${p.earnings.toLocaleString()}</td>
-                    <td data-label="ACTIONS" className="dash-actions-cell">
-                      <button onClick={() => handleEditProject(p.id)} className="dash-action-btn edit-btn" title="Edit"><IconEdit /></button>
-                      <button onClick={() => handleDeleteProject(p.id, p.title)} className="dash-action-btn delete-btn" title="Delete" disabled={p.isSold}><IconDelete /></button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        ) : (
-          <p className="dash-no-items">You haven't listed any projects yet. <Link to="/add-project">Add your first project!</Link></p>
-        )}
-      </section>
-      
-      {/* Account Management section can be styled similarly or kept as is for now */}
-      <section className="dashboard-section dashboard-other-actions">
-         <h2 className="dashboard-section-title">Account Management</h2>
-         <div className="dash-action-links">
-            <Link to="/profile/edit" className="dash-btn dash-btn-secondary">
-                <IconProfile /> Edit Profile
-            </Link>
-            <Link to="/purchases" className="dash-btn dash-btn-secondary">
-               <IconPurchases/> View Purchases
-            </Link>
-         </div>
-      </section>
-    </>
-  );
-
-  // --- JSX for Admin Dashboard (remains structurally similar, will benefit from new CSS) ---
-  const AdminDashboard = () => {
-    const topPerformingProjects = [...allProjects]
-        .filter(p => p.status === 'Approved' || p.isSold)
-        .sort((a, b) => (b.views + b.likes * 10 + b.inquiries * 5) - (a.views + a.likes * 10 + a.inquiries * 5))
-        .slice(0, 3);
-
-    return (
-    <>
-      <section className="dashboard-welcome-header"> {/* Use same class for consistency */}
-        <h1>Admin Dashboard</h1>
-        <p>Oversee marketplace activity and manage content.</p>
-      </section>
-
-      <section className="dashboard-stats-grid">
-        <div className="dash-stat-card">
-          <IconProjects /><span className="dash-stat-value">{dummyAdminStats.totalProjectsSubmitted}</span><span className="dash-stat-label">Total Projects</span>
-        </div>
-        <div className="dash-stat-card">
-          <IconUsers /><span className="dash-stat-value">{dummyAdminStats.totalUsers}</span><span className="dash-stat-label">Total Users</span>
-        </div>
-        <div className="dash-stat-card">
-          <IconUsers /><span className="dash-stat-value">{dummyAdminStats.activeUsers}</span><span className="dash-stat-label">Active Users</span>
-        </div>
-        <div className="dash-stat-card">
-          <IconEarnings /><span className="dash-stat-value">${dummyAdminStats.overallSales.toLocaleString()}</span><span className="dash-stat-label">Overall Sales</span>
-        </div>
-        <div className="dash-stat-card">
-          <IconEarnings /><span className="dash-stat-value">${dummyAdminStats.marketplaceEarnings.toLocaleString()}</span><span className="dash-stat-label">Marketplace Earnings</span>
-        </div>
-        <div className="dash-stat-card">
-          <IconNotification /><span className="dash-stat-value">{dummyAdminStats.pendingApprovalCount}</span><span className="dash-stat-label">Pending Approval</span>
-        </div>
-      </section>
-
-      <section className="dashboard-projects-section"> {/* Use same class */}
-        <div className="dashboard-section-header">
-            <h2 className="dashboard-section-title">Project Management</h2>
-             {/* Optional: Add button for admin specific actions */}
-        </div>
-        {allProjects.length > 0 ? (
-          <div className="dash-table-container">
-            <table className="dash-projects-table">
-              <thead>
-                <tr>
-                  <th>Title</th>
-                  <th>Submitted By</th>
-                  <th>Status</th>
-                  <th>Price</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {allProjects.map(p => (
-                  <tr key={p.id}>
-                    <td data-label="Title">{p.title}</td>
-                    <td data-label="Submitted By">{p.userName || 'N/A'}</td>
-                    <td data-label="Status">
-                      <span className={`dash-status-badge status-${p.status.toLowerCase().replace(/\s+/g, '-')}`}>
-                        {p.status}
-                      </span>
-                       {p.status === 'Rejected' && p.rejectionReason && (
-                        <small className="dash-rejection-reason">Reason: {p.rejectionReason}</small>
-                      )}
-                    </td>
-                    <td data-label="Price">${p.price.toLocaleString()}</td>
-                    <td data-label="Actions" className="dash-actions-cell">
-                      <Link to={`/project/${p.id}`} className="dash-action-btn" title="View Details"><IconViewDetails /></Link>
-                      {p.status === 'Pending' && (
-                        <>
-                          <button onClick={() => handleProjectApproval(p.id, 'Approved')} className="dash-action-btn approve-btn" title="Approve"><IconApprove /></button>
-                          <button onClick={() => handleProjectApproval(p.id, 'Rejected')} className="dash-action-btn reject-btn" title="Reject"><IconReject /></button>
-                        </>
-                      )}
-                      {(p.status === 'Approved' && !p.isSold) && (
-                         <button onClick={() => handleProjectApproval(p.id, 'Rejected')} className="dash-action-btn reject-btn" title="Reject/Unlist"><IconReject /></button>
-                      )}
-                      <button onClick={() => handleEditProject(p.id)} className="dash-action-btn edit-btn" title="Edit (Admin)"><IconEdit /></button>
-                      <button onClick={() => handleDeleteProject(p.id, p.title)} className="dash-action-btn delete-btn" title="Delete"><IconDelete /></button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        ) : (
-          <p className="dash-no-items">No projects submitted to the marketplace yet.</p>
-        )}
-      </section>
-
-      <section className="dashboard-section">
-        <h2 className="dashboard-section-title">Top Performing Projects</h2>
-        {topPerformingProjects.length > 0 ? (
-            <ul className="dash-list">
-                {topPerformingProjects.map(p => (
-                    <li key={p.id} className="dash-list-item">
-                        <Link to={`/project/${p.id}`}>{p.title}</Link>
-                        <span> - {p.views.toLocaleString()} views, {p.likes.toLocaleString()} likes</span>
-                    </li>
-                ))}
-            </ul>
-        ) : (
-            <p className="dash-no-items">Not enough data for top performing projects.</p>
-        )}
-      </section>
-    </>
-    );
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        duration: 0.5,
+        staggerChildren: 0.1
+      }
+    }
   };
 
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.5
+      }
+    }
+  };
+
+  const cardVariants = {
+    hidden: { scale: 0.8, opacity: 0 },
+    visible: {
+      scale: 1,
+      opacity: 1,
+      transition: {
+        duration: 0.5
+      }
+    },
+    hover: {
+      scale: 1.05,
+      transition: {
+        duration: 0.2
+      }
+    }
+  };
 
   return (
-    <div className="dashboard-page-container"> {/* Renamed for clarity with body styling */}
-      {/* Role switcher can be kept for demo or removed if auth handles roles */}
-      <div className="dashboard-role-switcher">
-        <span>Viewing as: <strong>{currentUser.role.toUpperCase()}</strong></span>
-        <button onClick={toggleRole} className="dash-btn dash-btn-secondary dash-btn-small">
-          Switch to {currentUser.role === 'user' ? 'Admin' : 'User'} View
-        </button>
+    <div className="dashboard-root">
+      {/* Top Bar */}
+      <div className="dashboard-topbar">
+        <div className="dashboard-welcome">
+          <h1 className="dashboard-welcome-title">
+            Welcome back, <span className="dashboard-user-name">{currentUser.name}</span>! 👋
+          </h1>
+          <p className="dashboard-welcome-desc">
+            Here's what's happening with your projects today.
+          </p>
+        </div>
       </div>
 
-      <div className="dashboard-content-area"> {/* Main content wrapper */}
-        {currentUser.role === 'user' ? <UserDashboard /> : <AdminDashboard />}
+      {/* Stats Row */}
+      <div className="dashboard-stats-row">
+        <div className="dashboard-stat-card">
+          <div className="dashboard-stat-icon">📊</div>
+          <div className="dashboard-stat-value">{userStats.projectsUploaded}</div>
+          <div className="dashboard-stat-label">Total Projects</div>
+        </div>
+
+        <div className="dashboard-stat-card">
+          <div className="dashboard-stat-icon">✅</div>
+          <div className="dashboard-stat-value">{userProjects.filter(p => p.status === 'Approved').length}</div>
+          <div className="dashboard-stat-label">Completed</div>
+        </div>
+
+        <div className="dashboard-stat-card">
+          <div className="dashboard-stat-icon">⏳</div>
+          <div className="dashboard-stat-value">{userProjects.filter(p => p.status === 'Pending').length}</div>
+          <div className="dashboard-stat-label">In Progress</div>
+        </div>
+
+        <div className="dashboard-stat-card">
+          <div className="dashboard-stat-icon">💰</div>
+          <div className="dashboard-stat-value">₹{userStats.totalEarnings.toLocaleString()}</div>
+          <div className="dashboard-stat-label">Revenue</div>
+        </div>
       </div>
+
+      {/* Projects Section */}
+      <div className="dashboard-projects">
+        <div className="dashboard-projects-header">
+          <h3>Recent Projects</h3>
+          <div className="dashboard-action-buttons">
+            <button
+              className="dashboard-add-btn"
+              onClick={() => setShowModal(true)}
+            >
+              + Add Project
+            </button>
+            <button
+              className="dashboard-action-btn"
+              onClick={() => setShowNotifications(!showNotifications)}
+            >
+              🔔 Notifications
+            </button>
+          </div>
+        </div>
+
+        <div className="dashboard-table-wrapper">
+          <table className="dashboard-table">
+            <thead>
+              <tr>
+                <th>Project Name</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Price</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {userProjects.map((project, index) => (
+                <tr key={project.id}>
+                  <td>{project.title}</td>
+                  <td>Web Development</td>
+                  <td>
+                    <span className={`dash-status-badge ${project.status.toLowerCase()}`}>
+                      {project.status}
+                    </span>
+                  </td>
+                  <td>₹{project.price.toLocaleString()}</td>
+                  <td>
+                    <Link to="/projectpage" className="dashboard-action-btn">View</Link>
+                    <button 
+                      onClick={() => handleEditProject(project.id)} 
+                      className="dashboard-action-btn"
+                    >
+                      Edit
+                    </button>
+                    <button 
+                      onClick={() => handleDeleteProject(project.id, project.title)} 
+                      className="dashboard-action-btn"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Notifications Panel */}
+      {showNotifications && (
+        <div className="dashboard-notifications-panel">
+          <h4>Recent Notifications</h4>
+          <div className="notification-item">
+            <p>✅ Project "E-commerce Platform" has been approved!</p>
+            <span>2 hours ago</span>
+          </div>
+          <div className="notification-item">
+            <p>💰 Payment received for "Mobile App" project</p>
+            <span>1 day ago</span>
+          </div>
+          <div className="notification-item">
+            <p>📝 New project "AI Chatbot" added to your portfolio</p>
+            <span>3 days ago</span>
+          </div>
+        </div>
+      )}
+
+      {/* Add Project Modal */}
+      {showModal && (
+        <div 
+          className="modal-backdrop"
+          onClick={() => setShowModal(false)}
+        >
+          <div 
+            className="modal-content"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3>Add New Project</h3>
+            <form>
+              <label>Project Name</label>
+              <input type="text" placeholder="Enter project name" />
+              
+              <label>Category</label>
+              <select>
+                <option>Web Development</option>
+                <option>Mobile Development</option>
+                <option>AI/ML</option>
+                <option>E-commerce</option>
+              </select>
+              
+              <label>Description</label>
+              <textarea placeholder="Enter project description"></textarea>
+              
+              <label>Price</label>
+              <input type="number" placeholder="Enter price" />
+              
+              <div className="modal-buttons">
+                <button
+                  type="button"
+                  onClick={() => setShowModal(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                >
+                  Add Project
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

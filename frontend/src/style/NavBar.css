@@ -1,117 +1,445 @@
-/* Navbar Styles */
+/* Navbar Styles - Fully Responsive */
 :root {
-  /* Define colors based on Tailwind names for consistency */
-  --navbar-bg: #1F2937; /* gray-800 */
-  --navbar-text: #FFFFFF; /* white */
-  --navbar-hover-text: #FCD34D; /* yellow-300 */
-  --navbar-border: #374151; /* gray-700 - for potential borders */
+  --navbar-height: 70px;
+  --navbar-height-mobile: 60px;
+  --primary: #6366f1;
+  --primary-dark: #4f46e5;
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --white: #ffffff;
+  --gray-50: #f8fafc;
+  --gray-100: #f1f5f9;
+  --gray-200: #e2e8f0;
+  --gray-300: #cbd5e1;
+  --gray-400: #94a3b8;
+  --gray-500: #64748b;
+  --gray-600: #475569;
+  --gray-700: #334155;
+  --gray-800: #1e293b;
+  --gray-900: #0f172a;
+  --border-radius: 8px;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 }
 
 .navbar {
-  background-color: var(--navbar-bg);
-  color: var(--navbar-text);
-  padding: 1rem; /* p-4 */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  position: fixed; /* Make navbar fixed */
+  position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  z-index: 1000; /* Ensure it's above other content */
+  right: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--gray-200);
+  z-index: 1000;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+  height: var(--navbar-height);
+}
+
+.navbar.scrolled {
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: var(--shadow-md);
+  border-bottom-color: var(--gray-300);
 }
 
 .navbar-container {
-  max-width: 1280px; /* max-w-7xl equivalent */
-  margin-left: auto;
-  margin-right: auto;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
   display: flex;
-  justify-content: space-between; /* justify-between */
-  align-items: center; /* items-center */
-  flex-wrap: wrap; /* Allow wrapping on small screens */
-  padding-left: 1rem; /* Add some padding for container content */
-  padding-right: 1rem;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
 }
 
 .navbar-brand {
-  font-size: 1.25rem; /* text-xl */
-  font-weight: 700; /* font-bold */
-  color: inherit; /* Inherit text color from parent */
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary);
   text-decoration: none;
-  margin-right: 1.5rem; /* Space between brand and links */
+  transition: var(--transition);
+  z-index: 1001;
 }
+
 .navbar-brand:hover {
-  color: var(--navbar-hover-text); /* Consistent hover */
+  color: var(--primary-dark);
+  transform: translateY(-1px);
 }
 
 .navbar-links {
   display: flex;
   align-items: center;
-  gap: 1rem; /* gap-4 */
-  flex-wrap: wrap; /* Allow links to wrap on smaller screens */
-  /* On small screens, this might become a column or hidden behind a burger */
+  gap: 2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .navbar-link {
-  color: var(--navbar-text);
+  color: var(--text-primary);
   text-decoration: none;
-  padding: 0.5rem 0.25rem; /* Add some padding for easier clicking */
-  transition: color 0.2s ease-in-out;
-  font-weight: 500; /* Medium weight often looks good in navs */
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: var(--transition);
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  position: relative;
+  white-space: nowrap;
 }
 
 .navbar-link:hover {
-  color: var(--navbar-hover-text); /* hover:text-yellow-300 */
+  color: var(--primary);
+  background: rgba(99, 102, 241, 0.1);
+  transform: translateY(-1px);
 }
 
-/* Optional: Active link styling (requires NavLink from react-router-dom) */
-/*
-.navbar-link.active {
-  color: var(--navbar-hover-text);
-  border-bottom: 2px solid var(--navbar-hover-text);
+.navbar-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--primary);
+  transition: var(--transition);
+  transform: translateX(-50%);
 }
-*/
 
-.navbar-auth-links { /* If you use the grouping div */
+.navbar-link:hover::after {
+  width: 80%;
+}
+
+/* Cart Button Styles */
+.navbar-cart-link {
   display: flex;
-  gap: 1rem;
   align-items: center;
-  margin-left: 1rem; /* Add space before auth links */
-  border-left: 1px solid var(--navbar-border); /* Optional separator */
-  padding-left: 1rem;
+  gap: 0.5rem;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: var(--transition);
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  position: relative;
+  white-space: nowrap;
 }
 
+.navbar-cart-link:hover {
+  color: var(--primary);
+  background: rgba(99, 102, 241, 0.1);
+  transform: translateY(-1px);
+}
 
-/* Basic responsiveness - hide links or stack them */
-@media (max-width: 768px) {
+.cart-icon-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-icon {
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
+}
+
+.navbar-cart-link:hover .cart-icon {
+  transform: scale(1.1);
+}
+
+.cart-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.2rem 0.4rem;
+  border-radius: 50%;
+  min-width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.cart-text {
+  font-weight: 500;
+}
+
+/* Logout Button Styles */
+.logout-btn {
+  appearance: none;
+  background: transparent;
+  color: var(--text-primary);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.logout-btn:hover {
+  color: var(--primary);
+  background: rgba(99, 102, 241, 0.1);
+  transform: translateY(-1px);
+}
+
+/* Mobile Menu Button */
+.mobile-menu-btn {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 30px;
+  height: 30px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1001;
+}
+
+.mobile-menu-btn span {
+  width: 100%;
+  height: 3px;
+  background: var(--text-primary);
+  border-radius: 2px;
+  transition: var(--transition);
+  transform-origin: center;
+}
+
+.mobile-menu-btn.active span:nth-child(1) {
+  transform: rotate(45deg) translate(6px, 6px);
+}
+
+.mobile-menu-btn.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.mobile-menu-btn.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
   .navbar-container {
-      flex-direction: column; /* Stack brand and links */
-      align-items: flex-start; /* Align items to the start */
+    padding: 0 1rem;
   }
+  
   .navbar-links {
-      margin-top: 0.75rem; /* Space below brand */
-      width: 100%; /* Take full width */
-      justify-content: flex-start; /* Align links to start */
-      /* Or add styles to hide behind a burger menu */
+    gap: 1.5rem;
   }
-   .navbar-auth-links {
-      margin-left: 0;
-      padding-left: 0;
-      border-left: none;
-      margin-top: 0.5rem; /* Space before auth links when stacked */
-      width: 100%;
-      justify-content: flex-start;
-  }
-}
-
-/* Add padding to the body to prevent content from hiding behind the fixed navbar */
-body {
-padding-top: 68px; /* Match the approximate height of the navbar (p-4 is 1rem, plus text height) - ADJUST AS NEEDED */
-                  /* If navbar height changes (e.g., wraps on mobile), this needs adjustment or a different approach */
 }
 
 @media (max-width: 768px) {
-  body {
-    /* Calculate a potentially larger padding-top if the navbar wraps and becomes taller */
-    /* This is tricky without JS, a fixed height navbar is easier */
-     padding-top: 120px; /* ESTIMATE - Adjust based on wrapped height */
+  .navbar {
+    height: var(--navbar-height-mobile);
   }
+  
+  .navbar-container {
+    padding: 0 1.5rem;
+  }
+  
+  .navbar-brand {
+    font-size: 1.25rem;
+  }
+  
+  .mobile-menu-btn {
+    display: flex;
+    z-index: 1002;
+  }
+  
+  .navbar-links {
+    position: fixed;
+    top: var(--navbar-height-mobile);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--white);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease-in-out;
+    z-index: 1005;
+    padding: 1rem;
+    box-sizing: border-box;
+    border-top: 1px solid var(--gray-200);
+    /* Hide completely when closed to avoid ghost text */
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+  }
+  
+  .navbar-links.mobile-open {
+    transform: translateX(0);
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+  }
+  
+  .navbar-link,
+  .navbar-cart-link,
+  .logout-btn {
+    font-size: 1.125rem;
+    padding: 1rem 2rem;
+    width: 100%;
+    text-align: center;
+    border-radius: var(--border-radius);
+    background: transparent;
+    transition: var(--transition);
+    color: var(--text-primary);
+  }
+  
+  .navbar-link:hover,
+  .navbar-cart-link:hover,
+  .logout-btn:hover {
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--primary);
+    transform: translateY(-2px);
+  }
+  
+  .navbar-link::after,
+  .navbar-cart-link::after {
+    display: none;
+  }
+  
+  .cart-text {
+    font-size: 1.125rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-container {
+    padding: 0 1rem;
+  }
+  
+  .navbar-brand {
+    font-size: 1.125rem;
+  }
+  
+  .mobile-menu-btn {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .navbar-links {
+    gap: 1.5rem;
+    top: var(--navbar-height-mobile);
+  }
+  
+  .navbar-link,
+  .navbar-cart-link,
+  .logout-btn {
+    font-size: 1rem;
+    padding: 0.875rem 1.5rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .navbar-container {
+    padding: 0 0.75rem;
+  }
+  
+  .navbar-brand {
+    font-size: 1rem;
+  }
+  
+  .mobile-menu-btn {
+    width: 26px;
+    height: 26px;
+  }
+  
+  .navbar-links {
+    gap: 1rem;
+    top: var(--navbar-height-mobile);
+  }
+  
+  .navbar-link,
+  .navbar-cart-link,
+  .logout-btn {
+    font-size: 0.875rem;
+    padding: 0.75rem 1.25rem;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .navbar {
+    background: rgba(15, 23, 42, 0.95);
+    border-bottom-color: var(--gray-700);
+  }
+  
+  .navbar.scrolled {
+    background: rgba(15, 23, 42, 0.98);
+    border-bottom-color: var(--gray-600);
+  }
+  
+  .navbar-link,
+  .navbar-cart-link,
+  .logout-btn {
+    color: var(--gray-300);
+  }
+  
+  .navbar-link:hover,
+  .navbar-cart-link:hover,
+  .logout-btn:hover {
+    color: var(--primary);
+    background: rgba(99, 102, 241, 0.2);
+  }
+  
+  .mobile-menu-btn span {
+    background: var(--gray-300);
+  }
+  
+  .navbar-links {
+    background: var(--gray-900); /* Changed to solid dark background for visibility */
+    backdrop-filter: blur(0); /* Removed backdrop-filter in dark mode */
+  }
+  
+  .navbar-link,
+  .navbar-cart-link,
+  .logout-btn {
+    color: var(--dark-text); /* Ensure text color is appropriate for dark background */
+  }
+}
+
+/* Focus States for Accessibility */
+.navbar-link:focus,
+.navbar-cart-link:focus,
+.logout-btn:focus,
+.mobile-menu-btn:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Smooth transitions for all interactive elements */
+.navbar-link,
+.navbar-cart-link,
+.logout-btn,
+.mobile-menu-btn {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Prevent text selection on mobile menu button */
+.mobile-menu-btn {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }

@@ -1,66 +1,133 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useNavigate, Link } from 'react-router-dom';
 import '../style/Login.css';
+import { useAuth } from '../context/AuthContext';
+import api from '../api.js'; // centralized Axios instance
 
-const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false); // State for loading spinner
-  const [error, setError] = useState(''); // State for error message
+export default function Login() {
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState('');
   const navigate = useNavigate();
+  const { login } = useAuth();
 
+  // Handle input changes
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  // Handle login submission
   const handleLogin = async (e) => {
     e.preventDefault();
-    setLoading(true); // Start loading
-    setError(''); // Clear any previous error messages
+    setLoading(true);
+    setMessage('');
 
     try {
-      const response = await axios.post('http://localhost:3000/api/login', {
-        email,
-        password,
-      });
-      console.log(response.data.message);
+      const response = await api.post('/login', formData);
 
-      // Clear form after successful login
-      setEmail('');
-      setPassword('');
-
-      // Navigate to the home page after successful login
-      navigate('/home');
+      if (response.data.token) {
+        // Store token and user data via AuthContext
+        login(response.data.token, response.data.user);
+        navigate('/home');
+      } else {
+        setMessage('Invalid response from server');
+      }
     } catch (error) {
-      console.error('Login failed:', error);
-      setError('Login failed. Please check your credentials and try again.');
+      setMessage(error.response?.data?.message || 'Login failed. Please try again.');
     } finally {
-      setLoading(false); // Stop loading
+      setLoading(false);
     }
   };
 
   return (
-    <div className="login-container">
-      <h2>Login</h2>
-      {error && <p className="error-message">{error}</p>} {/* Display error message */}
-      <form onSubmit={handleLogin}>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Email"
-          required
-        />
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-          required
-        />
-        <button type="submit" disabled={loading}>
-          {loading ? 'Logging in...' : 'Login'} {/* Show loading text */}
-        </button>
-      </form>
+    <div className="login-page">
+      {/* Background Elements */}
+      <div className="login-background">
+        <div className="bg-circle bg-circle-1"></div>
+        <div className="bg-circle bg-circle-2"></div>
+        <div className="bg-circle bg-circle-3"></div>
+      </div>
+
+      {/* Main Login Container */}
+      <div className="login-container">
+        <div className="login-header">
+          <h1 className="login-title">Welcome Back</h1>
+          <p className="login-subtitle">Sign in to your account to continue</p>
+        </div>
+
+        {/* Display error or success message */}
+        {message && (
+          <div
+            className={`login-message ${message.toLowerCase().includes('failed') ? 'error' : 'success'}`}
+          >
+            {message}
+          </div>
+        )}
+
+        {/* Login Form */}
+        <form onSubmit={handleLogin} className="login-form">
+          <div className="form-group">
+            <label htmlFor="email">EMAIL ADDRESS</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              className="form-input"
+              placeholder="Enter your email"
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="password">PASSWORD</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+              className="form-input"
+              placeholder="Enter your password"
+            />
+          </div>
+
+          <div className="form-options">
+            <Link to="/forgot-password" className="forgot-password">
+              Forgot Password?
+            </Link>
+          </div>
+
+          <button type="submit" className="login-button" disabled={loading}>
+            {loading ? (
+              <div className="loading-spinner">
+                <div className="spinner"></div>
+                <span>Signing in...</span>
+              </div>
+            ) : (
+              'Sign In'
+            )}
+          </button>
+        </form>
+
+        {/* Footer */}
+        <div className="login-footer">
+          <p className="register-prompt">
+            Don't have an account?{' '}
+            <Link to="/register" className="register-link">
+              Sign up here
+            </Link>
+          </p>
+        </div>
+      </div>
     </div>
   );
-};
-
-export default Login;
+}

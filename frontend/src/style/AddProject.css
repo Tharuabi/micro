@@ -23,28 +23,81 @@ body { /* Ensure base font is set if not globally */
   margin: 0;
 }
 
+/* AddProject & AddIdea shared styles */
 .add-project-container {
-  max-width: 800px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+  max-width: 680px;
+  margin: 48px auto 0 auto;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 10px 28px rgba(16,24,40,.12);
+  padding: 36px 32px 32px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-
 .ap-main-title {
-  font-size: clamp(1.8rem, 4vw, 2.5rem);
-  color: var(--ap-primary-color);
-  text-align: center;
-  margin-bottom: 0.5rem;
+  font-size: 2.2rem;
   font-weight: 700;
-}
-
-.ap-subtitle {
-  font-size: 1.1rem;
-  color: var(--ap-text-medium);
+  color: #2563eb;
+  margin-bottom: 24px;
   text-align: center;
-  margin-bottom: 2.5rem;
+}
+.ap-form {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 18px;
+}
+.ap-form label {
+  font-weight: 600;
+  color: #22223b;
+  margin-bottom: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.ap-form input[type="text"],
+.ap-form input[type="file"],
+.ap-form textarea {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  margin-top: 2px;
+  background: #f8fafc;
+  transition: border 0.18s;
+}
+.ap-form input[type="text"]:focus,
+.ap-form textarea:focus {
+  border: 1.5px solid #2563eb;
+  outline: none;
+}
+.ap-form textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+.dashboard-add-btn {
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
+  color: #fff;
+  border: 0;
+  border-radius: 999px;
+  padding: 14px 18px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-top: 10px;
+  width: 100%;
+  cursor: pointer;
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+  box-shadow: 0 8px 24px rgba(99,102,241,.25);
+  letter-spacing: .2px;
+}
+.dashboard-add-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 36px rgba(99,102,241,.35);
+}
+.dashboard-add-btn:active {
+  transform: translateY(0);
 }
 
 /* Success Message */
@@ -60,16 +113,11 @@ body { /* Ensure base font is set if not globally */
 }
 
 /* Form Styles */
-.ap-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem; /* Space between form groups */
-}
-
 .ap-form-group {
   display: flex;
   flex-direction: column;
 }
+.ap-form-group--full { grid-column: 1 / -1; }
 
 .ap-label {
   font-weight: 600;
@@ -175,6 +223,9 @@ body { /* Ensure base font is set if not globally */
     margin-top: 1rem;
     border-top: 1px solid var(--ap-border-color);
     padding-top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 .ap-image-preview-container p {
     font-weight: 500;
@@ -183,11 +234,13 @@ body { /* Ensure base font is set if not globally */
     font-size: 0.9rem;
 }
 .ap-image-preview {
-    max-width: 200px; /* Limit preview size */
-    max-height: 150px;
-    border-radius: 4px;
+    width: 260px;
+    height: 160px;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 10px;
     border: 1px solid var(--ap-border-color);
-    object-fit: contain;
+    box-shadow: 0 6px 14px rgba(16,24,40,.08);
 }
 
 /* Error Styling */
@@ -238,10 +291,10 @@ body { /* Ensure base font is set if not globally */
 }
 
 /* Responsive Adjustments */
-@media (max-width: 600px) {
+@media (max-width: 820px) {
   .add-project-container {
-    margin: 1rem;
-    padding: 1.5rem;
+    max-width: 98vw;
+    padding: 18px 6vw 24px 6vw;
   }
   .ap-main-title {
     font-size: 1.8rem;
@@ -249,4 +302,5 @@ body { /* Ensure base font is set if not globally */
   .ap-subtitle {
     font-size: 1rem;
   }
+  .ap-form { grid-template-columns: 1fr; }
 }

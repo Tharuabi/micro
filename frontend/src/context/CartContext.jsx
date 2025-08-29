@@ -1,39 +1,137 @@
-// src/context/CartContext.js
-
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useReducer, useEffect } from 'react';
 
 const CartContext = createContext();
 
-export const CartProvider = ({ children }) => {
-  const [cart, setCart] = useState([]);
+const cartReducer = (state, action) => {
+  switch (action.type) {
+    case 'ADD_TO_CART':
+      const existingItem = state.items.find(item => item._id === action.payload._id);
+      if (existingItem) {
+        return {
+          ...state,
+          items: state.items.map(item =>
+            item._id === action.payload._id
+              ? { ...item, quantity: item.quantity + 1 }
+              : item
+          )
+        };
+      } else {
+        return {
+          ...state,
+          items: [...state.items, { ...action.payload, quantity: 1 }]
+        };
+      }
 
-  const updateQuantity = (id, quantity) => {
-    setCart(prev =>
-      prev.map(item =>
-        item.id === id ? { ...item, quantity: Math.max(quantity, 1) } : item
-      )
-    );
+    case 'REMOVE_FROM_CART':
+      return {
+        ...state,
+        items: state.items.filter(item => item._id !== action.payload)
+      };
+
+    case 'UPDATE_QUANTITY':
+      return {
+        ...state,
+        items: state.items.map(item =>
+          item._id === action.payload.id
+            ? { ...item, quantity: action.payload.quantity }
+            : item
+        )
+      };
+
+    case 'CLEAR_CART':
+      return {
+        ...state,
+        items: []
+      };
+
+    case 'LOAD_CART':
+      return {
+        ...state,
+        items: action.payload || []
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const CartProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(cartReducer, {
+    items: []
+  });
+
+  // Load cart from localStorage on mount
+  useEffect(() => {
+    const savedCart = localStorage.getItem('cart');
+    if (savedCart) {
+      try {
+        const parsedCart = JSON.parse(savedCart);
+        dispatch({ type: 'LOAD_CART', payload: parsedCart });
+      } catch (error) {
+        console.error('Error loading cart from localStorage:', error);
+      }
+    }
+  }, []);
+
+  // Save cart to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(state.items));
+  }, [state.items]);
+
+  const addToCart = (item) => {
+    dispatch({ type: 'ADD_TO_CART', payload: item });
   };
 
-  const removeFromCart = (id) => {
-    setCart(prev => prev.filter(item => item.id !== id));
+  const removeFromCart = (itemId) => {
+    dispatch({ type: 'REMOVE_FROM_CART', payload: itemId });
+  };
+
+  const updateQuantity = (itemId, quantity) => {
+    if (quantity <= 0) {
+      removeFromCart(itemId);
+    } else {
+      dispatch({ type: 'UPDATE_QUANTITY', payload: { id: itemId, quantity } });
+    }
+  };
+
+  const clearCart = () => {
+    dispatch({ type: 'CLEAR_CART' });
   };
 
   const getCartItemCount = () => {
-    return cart.reduce((total, item) => total + (item.quantity || 1), 0);
+    return state.items.reduce((total, item) => total + item.quantity, 0);
   };
 
   const getCartTotal = () => {
-    return cart.reduce((total, item) => total + (item.price || 0) * (item.quantity || 1), 0);
+    return state.items.reduce((total, item) => total + (item.price * item.quantity), 0);
+  };
+
+  const getCartItems = () => {
+    return state.items;
+  };
+
+  const value = {
+    items: state.items,
+    addToCart,
+    removeFromCart,
+    updateQuantity,
+    clearCart,
+    getCartItemCount,
+    getCartTotal,
+    getCartItems
   };
 
   return (
-    <CartContext.Provider value={{ cart, updateQuantity, removeFromCart, getCartItemCount, getCartTotal }}>
+    <CartContext.Provider value={value}>
       {children}
     </CartContext.Provider>
   );
 };
 
 export const useCart = () => {
-  return useContext(CartContext);
-};
+  const context = useContext(CartContext);
+  if (!context) {
+    throw new Error('useCart must be used within a CartProvider');
+  }
+  return context;
+}; 
