@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create an Axios instance
 const api = axios.create({
-  baseURL: 'https://backend-startup-4.onrender.com/api', // Your backend URL
+  baseURL: 'https://backend-startup-4.onrender.com/', // Your backend URL
   withCredentials: true, // if you need cookies for auth
 });
 
