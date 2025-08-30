@@ -29,7 +29,7 @@ const Register = () => {
     setMessageType('');
 
     try {
-      const res = await api.post('/register', formData);
+      const res = await api.post('/api/register', formData);
 
       setMessage(res.data.message || 'Registration successful!');
       setMessageType('success');

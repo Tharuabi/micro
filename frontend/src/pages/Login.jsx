@@ -29,7 +29,7 @@ export default function Login() {
     setMessage('');
 
     try {
-      const response = await api.post('/login', formData);
+      const response = await api.post('/api/login', formData);
 
       if (response.data.token) {
         // Store token and user data via AuthContext
