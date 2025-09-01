@@ -30,7 +30,7 @@ let OPENAI_DISABLED_UNTIL_MS = 0; // backoff after quota errors
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
 const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET;
 const stripe = Stripe(STRIPE_SECRET_KEY);
-const JWT_SECRET_KEY = "yourSuperSecretAndUniqueKey!ChangeThisValueLater";
+const JWT_SECRET_KEY = "tharanis2023it";
 
 const app = express(); 
 mongoose.connect(process.env.MONGO_URI)
@@ -64,9 +64,24 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 
+// app.use(cors({
+//   origin: 'https://frontend-startup.vercel.app', // Your frontend domain
+//   credentials: true // Allow cookies or auth headers
+// }));
+const allowedOrigins = [
+  'https://frontend-startup.vercel.app', // deployed frontend
+  'http://localhost:5173'                 // local dev frontend
+];
+
 app.use(cors({
-  origin: 'https://frontend-startup.vercel.app', // Your frontend domain
-  credentials: true // Allow cookies or auth headers
+  origin: function(origin, callback) {
+    if (!origin) return callback(null, true); // allow requests like Postman
+    if (allowedOrigins.indexOf(origin) === -1) {
+      return callback(new Error(`CORS not allowed from ${origin}`), false);
+    }
+    return callback(null, true);
+  },
+  credentials: true
 }));
 
 app.use(express.json());
@@ -1210,6 +1225,10 @@ app.post('/api/chat', async (req, res) => {
     return res.json({ reply });
   }
 });
+app.get('/', (req, res) => {
+  res.send('Backend is running ✅');
+});
+
 
 const PORT = process.env.PORT || 5000;
 
